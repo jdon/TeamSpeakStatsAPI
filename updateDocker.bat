@@ -1,0 +1,4 @@
+docker pull jdon278/teamspeakstatsapi
+docker stop teamspeakstatsapi
+docker rm teamspeakstatsapi
+runDocker.bat
