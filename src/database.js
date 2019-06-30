@@ -11,6 +11,9 @@ const getStatsQuery =
 const getTotalStatsQuery =
 	'SELECT sum(getIdleTime(idletime)) as totalIdle, sum(getidletime(connectiontime)) - sum(getIdleTime(idletime)) as totalliteime, sum(getidletime(connectiontime)) as totalconnectionTime  from public.logs';
 
+const getTimeDataQuery =
+	"select date_trunc('seconds',timestamp) AS time, array_agg(nickname) as nicknames, count(nickName) as nicknamecount from public.logs group by date_trunc('seconds',timestamp) HAVING count(nickName) >= 1 order by date_trunc('seconds',timestamp)";
+
 const getStats = async () => {
 	let results = await pool.query(getStatsQuery);
 	let totalresults = await pool.query(getTotalStatsQuery);
@@ -23,4 +26,18 @@ const getStats = async () => {
 	return { rows: results.rows, total: totalresults.rows };
 };
 
-module.exports = getStats;
+const getTimeData = async () => {
+	let results = await pool.query(getTimeDataQuery);
+	if (!results) {
+		throw {
+			status: 500,
+			message: "Couldn't get results",
+		};
+	}
+	return results.rows;
+};
+
+module.exports = {
+	getStats: getStats,
+	getTimeData: getTimeData,
+};
