@@ -5,12 +5,10 @@ const app = express();
 var router = express.Router();
 const statsRouter = require('./routers/stats');
 
-const port = process.env.port;
-
 app.use(cors());
 
 router.use('/stats', statsRouter);
 
 app.use('/', router);
 
-app.listen(port);
+app.listen(8080);
