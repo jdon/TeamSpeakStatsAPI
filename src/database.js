@@ -14,6 +14,12 @@ const getTotalStatsQuery =
 const getTimeDataQuery =
 	"select date_trunc('seconds',timestamp) AS time, array_agg(nickname) as nicknames, count(nickName) as nicknamecount from public.logs group by date_trunc('seconds',timestamp) HAVING count(nickName) >= 1 order by date_trunc('seconds',timestamp)";
 
+const getLabelsQuery =
+	"select date_trunc('seconds',timestamp)  from public.logs";
+
+const getValidLabelsQuery =
+	"select date_trunc('seconds',timestamp)  from public.logs group by date_trunc('seconds',timestamp) HAVING count(nickName) >= 1";
+
 const getStats = async () => {
 	let results = await pool.query(getStatsQuery);
 	let totalresults = await pool.query(getTotalStatsQuery);
@@ -37,7 +43,31 @@ const getTimeData = async () => {
 	return results.rows;
 };
 
+const getTimeLabels = async () => {
+	let results = await pool.query(getLabelsQuery);
+	if (!results) {
+		throw {
+			status: 500,
+			message: "Couldn't get results",
+		};
+	}
+	return results.rows;
+};
+
+const getValidTimeLabels = async () => {
+	let results = await pool.query(getValidLabelsQuery);
+	if (!results) {
+		throw {
+			status: 500,
+			message: "Couldn't get results",
+		};
+	}
+	return results.rows;
+};
+
 module.exports = {
 	getStats: getStats,
 	getTimeData: getTimeData,
+	getTimeLabels: getTimeLabels,
+	getValidTimeLabels: getValidTimeLabels,
 };
