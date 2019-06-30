@@ -35,34 +35,4 @@ statsRouter.get('/time', async (req, res) => {
 	}
 });
 
-statsRouter.get('/time/labels', async (req, res) => {
-	debug('Get time');
-	const cachedResponse = cache.get('time-labels');
-	if (cachedResponse != null) {
-		return res.send(cachedResponse);
-	}
-	try {
-		let stats = await database.getTimeLabels();
-		cache.set('time-labels', stats);
-		return res.send(stats);
-	} catch (err) {
-		return res.send(err);
-	}
-});
-
-statsRouter.get('/time/validlabels', async (req, res) => {
-	debug('Get time');
-	const cachedResponse = cache.get('time-valid-labels');
-	if (cachedResponse != null) {
-		return res.send(cachedResponse);
-	}
-	try {
-		let stats = await database.getValidTimeLabels();
-		cache.set('time-valid-labels', stats);
-		return res.send(stats);
-	} catch (err) {
-		return res.send(err);
-	}
-});
-
 module.exports = statsRouter;
