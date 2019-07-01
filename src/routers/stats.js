@@ -35,4 +35,20 @@ statsRouter.get('/time', async (req, res) => {
 	}
 });
 
+statsRouter.get('/time/:nickname', async (req, res) => {
+	debug('Get time');
+	const nickName = req.params.nickname;
+	const cachedResponse = cache.get('time' + nickName);
+	if (cachedResponse != null) {
+		return res.send(cachedResponse);
+	}
+	try {
+		let stats = await database.getTimeDataforUser(nickName);
+		cache.set('time' + nickName, stats);
+		return res.send(stats);
+	} catch (err) {
+		return res.send(err);
+	}
+});
+
 module.exports = statsRouter;

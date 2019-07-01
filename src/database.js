@@ -14,6 +14,9 @@ const getTotalStatsQuery =
 const getTimeDataQuery =
 	"SELECT date as x, coalesce(y,0) AS y FROM (SELECT date_trunc('day', dd):: timestamp as date FROM generate_series ( (select MIN(timestamp) from public.logs) , now() , '1 day'::interval) dd) AS date LEFT OUTER JOIN (select date_trunc('day',timestamp) AS x, COUNT(DISTINCT nickname) as y from public.logs group by date_trunc('day',timestamp)) results ON (date = results.x)";
 
+const getTimeDataforUserQuery =
+	"SELECT date as x, coalesce(y,0) AS y FROM (SELECT date_trunc('day', dd):: timestamp as date FROM generate_series ( (select MIN(timestamp) from public.logs) , now() , '1 day'::interval) dd) AS date LEFT OUTER JOIN (select date_trunc('day',timestamp) AS x, COUNT(DISTINCT nickname) as y from public.logs where nickname=$1 group by date_trunc('day',timestamp) ) results ON (date = results.x)";
+
 const getStats = async () => {
 	let results = await pool.query(getStatsQuery);
 	let totalresults = await pool.query(getTotalStatsQuery);
@@ -37,7 +40,19 @@ const getTimeData = async () => {
 	return results.rows;
 };
 
+const getTimeDataforUser = async nickName => {
+	let results = await pool.query(getTimeDataforUserQuery, [nickName]);
+	if (!results) {
+		throw {
+			status: 500,
+			message: "Couldn't get results",
+		};
+	}
+	return results.rows;
+};
+
 module.exports = {
 	getStats: getStats,
 	getTimeData: getTimeData,
+	getTimeDataforUser: getTimeDataforUser,
 };
