@@ -43,7 +43,7 @@ statsRouter.get('/time/:nickname', async (req, res) => {
 		return res.send(cachedResponse);
 	}
 	try {
-		let stats = await database.getTimeDataforUser(nickName);
+		let stats = await database.getTimeDataForUser(nickName);
 		cache.set('time' + nickName, stats);
 		return res.send(stats);
 	} catch (err) {

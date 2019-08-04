@@ -40,7 +40,7 @@ const getTimeData = async () => {
 	return results.rows;
 };
 
-const getTimeDataforUser = async nickName => {
+const getTimeDataForUser = async nickName => {
 	let results = await pool.query(getTimeDataforUserQuery, [nickName]);
 	if (!results) {
 		throw {
@@ -54,5 +54,5 @@ const getTimeDataforUser = async nickName => {
 module.exports = {
 	getStats: getStats,
 	getTimeData: getTimeData,
-	getTimeDataforUser: getTimeDataforUser,
+	getTimeDataForUser: getTimeDataForUser,
 };
