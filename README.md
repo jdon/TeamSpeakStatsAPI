@@ -1,11 +1,10 @@
 # TeamSpeak stats api
 
-Pulls data from postgres and return a json.
+Pulls data from postgres and return json.
 
 Requires a `.env` file in the following format:
 
 ```
-port=8081
 dataBaseURI=postgresql://dbUserNaME:dBPassword@host:port/database
 DEBUG=TeamSpeakStats-statsRouter
 DEBUG_DEPTH=99
