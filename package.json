@@ -10,6 +10,8 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@bugsnag/js": "^6.4.0",
+		"@bugsnag/plugin-express": "^6.4.0",
 		"cors": "^2.8.5",
 		"debug": "^4.1.1",
 		"dotenv": "^8.0.0",

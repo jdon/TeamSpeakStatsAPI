@@ -12,6 +12,4 @@ RUN npm ci --only=production
 
 # Bundle app source
 COPY . .
-
-EXPOSE 9081
 CMD [ "npm", "start" ]
