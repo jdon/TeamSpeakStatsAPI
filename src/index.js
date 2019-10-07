@@ -10,7 +10,6 @@ if (bugSnagKey) {
 	const bugsnagClient = bugsnag(bugSnagKey)
 	bugsnagClient.use(bugsnagExpress)
 	bugSnagMiddleware = bugsnagClient.getPlugin('express')
-	bugsnagClient.notify(new Error('Test error'))
 }
 
 var cors = require('cors');
